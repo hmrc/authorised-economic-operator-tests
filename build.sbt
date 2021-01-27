@@ -28,8 +28,6 @@ libraryDependencies += "org.mongodb" %% "casbah" % "3.1.1"
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-u", "target/test-reports")
 
-testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports/html-reports")
-
 testOptions in Test += Tests.Argument("-oD")
 
 parallelExecution in Test := false
