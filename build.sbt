@@ -26,9 +26,9 @@ libraryDependencies += "uk.gov.hmrc" %% "domain" % "5.1.0"
 
 libraryDependencies += "org.mongodb" %% "casbah" % "3.1.1"
 
-testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-u", "target/uk.aeo.mra.data.test-reports")
+testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-u", "target/test-reports")
 
-testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/uk.aeo.mra.data.test-reports/html-reports")
+testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports/html-reports")
 
 testOptions in Test += Tests.Argument("-oD")
 
