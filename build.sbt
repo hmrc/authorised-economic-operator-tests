@@ -37,3 +37,11 @@ scalacOptions ++= Seq("-feature")
 val warmUpPlatform = taskKey[Unit]("Warms up the platform so the apps are ready to rumble")
 
 fullRunTask(warmUpPlatform, Test, "uk.gov.hmrc.integration.tests.PlatformWarmer")
+
+val testDependencies = Seq("org.scalatest" %% "scalatest" % "3.0.0" % "test")
+
+// Project Settings
+(testOptions in Test) ++= Seq(
+    Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports/html-reports"),
+    Tests.Argument(TestFrameworks.ScalaTest, "-o")
+)

@@ -23,18 +23,18 @@ trait EndToEndTestConfig extends Assertions {
     case "dev" =>
       TestConfig(
         requiresPort = false,
-        url = "https://authorised-economic-operator-stubs.protected.mdtp",
-        apiProxyUrl = "https://authorised-economic-operator-data-converter.protected.mdtp")
+        apiProxyUrl = "https://authorised-economic-operator-data-converter.protected.mdtp",
+        url = "https://authorised-economic-operator-stubs.protected.mdtp")
     case "qa" =>
       TestConfig(
         requiresPort = false,
-        url = "https://authorised-economic-operator-stubs.protected.mdtp",
-        apiProxyUrl = "https://authorised-economic-operator-data-converter.protected.mdtp")
+        apiProxyUrl = "https://authorised-economic-operator-data-converter.protected.mdtp",
+        url = "https://authorised-economic-operator-stubs.protected.mdtp")
     case "staging" =>
       TestConfig(
         requiresPort = false,
-        url = "https://authorised-economic-operator-stubs.protected.mdtp",
-        apiProxyUrl = "https://authorised-economic-operator-data-converter.protected.mdtp")
+        apiProxyUrl = "https://authorised-economic-operator-data-converter.protected.mdtp",
+        url = "https://authorised-economic-operator-stubs.protected.mdtp")
     case other => fail(s"Environment '$other' not recognised")
   }
 }
