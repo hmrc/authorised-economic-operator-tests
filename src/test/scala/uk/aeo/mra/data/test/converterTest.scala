@@ -1,3 +1,4 @@
+/*
 package uk.aeo.mra.data.test
 
 import uk.aeo.mra.data.api.DataConverterApi
@@ -18,3 +19,4 @@ class converterTest extends AcceptanceTestSpec {
     }
   }
 }
+*/

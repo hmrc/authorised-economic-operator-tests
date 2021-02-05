@@ -20,7 +20,7 @@ trait EndToEndTestConfig extends Assertions {
         requiresPort = true,
         apiProxyUrl = "http://localhost:8234",
         url = "http://localhost:9000")
-    case "dev" =>
+    case "development" =>
       TestConfig(
         requiresPort = false,
         apiProxyUrl = "https://authorised-economic-operator-data-converter.protected.mdtp",
