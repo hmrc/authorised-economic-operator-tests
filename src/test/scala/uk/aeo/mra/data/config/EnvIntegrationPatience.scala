@@ -8,7 +8,7 @@ trait EnvIntegrationPatience extends IntegrationPatience with Eventually {
   implicit abstract override val patienceConfig: PatienceConfig = {
     val (envBasedTimeout, envBasedInterval) = System.getProperty("env") match {
       case _ => (scaled(Span(10, Seconds)), scaled(Span(10, Seconds)))
-      case "development" => (scaled(Span(10, Seconds)), scaled(Span(10, Seconds)))
+      case "dev" => (scaled(Span(10, Seconds)), scaled(Span(10, Seconds)))
       case "qa" => (scaled(Span(10, Seconds)), scaled(Span(10, Seconds)))
 
     }

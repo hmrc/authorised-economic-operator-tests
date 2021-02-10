@@ -18,8 +18,8 @@ trait EndToEndTestConfig extends Assertions {
     case null | "local" =>
       TestConfig(
         requiresPort = true,
-        apiProxyUrl = "http://localhost:8234",
-        url = "http://localhost:9000")
+        apiProxyUrl = "http://localhost:9000",
+        url = "http://localhost:8234")
     case "development" =>
       TestConfig(
         requiresPort = false,

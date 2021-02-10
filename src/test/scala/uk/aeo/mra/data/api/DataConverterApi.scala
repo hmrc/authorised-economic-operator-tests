@@ -1,4 +1,3 @@
-/*
 package uk.aeo.mra.data.api
 
 import play.api.libs.json.Json
@@ -8,45 +7,82 @@ object DataConverterApi extends Api {
 
   override def serviceName: String = "aeo-data-converter"
 
-  def aeoMraDataConverter(orgFileName: String, resultCSV: String, ackXml: String, resultXml: String, orgXml: String, url: String): Unit = {
+  def aeoMraDataConverter(orgFileName: String, checkSum: String, resultCSV: String, ackXml: String, resultXml: String, orgXml: String): Unit = {
     val payload =
       s"""
          |{
          |    "serviceReferenceNumber": "123456789012",
          |    "download": {
-         |        "url": "$url/download/$orgFileName",
-         |        "checksum": "27e41209098b9b6c11b997f0fd84586c",
+         |        "url": "${testConfig.url}/download/$orgFileName",
+         |        "checksum": "$checkSum",
          |        "filename": "$orgFileName",
          |        "filetype": "xml"
          |    },
          |    "upload": {
-         |        "url": "$url/upload-multi-part/$resultCSV",
+         |        "url": "${testConfig.url}/upload-multi-part/$resultCSV",
          |        "filename": "$resultCSV"
          |    },
          |    "ack": {
-         |       "url": "$url/upload-multi-part/$ackXml",
+         |       "url": "${testConfig.url}/upload-multi-part/$ackXml",
          |       "filename": "$ackXml"
          |    },
          |    "result":{
-         |      "url": "$url/upload-multi-part/$resultXml",
+         |      "url": "${testConfig.url}/upload-multi-part/$resultXml",
          |      "filename": "$resultXml"
          |    },
          |    "original": {
-         |        "url": "$url/upload-multi-part/$orgXml",
+         |        "url": "${testConfig.url}/upload-multi-part/$orgXml",
          |        "filename": "$orgXml"
          |    }
          |}
          |""".stripMargin
 
     val resp: WSResponse = POST("notifySourceReady", Json.parse(payload))
-    resp should have('status(202))
-    print(payload)
+    if (resp.status==(202)) {
+      resp should have('status(202))
+      print(resp.body)
+      print("Test is successful")
+    }
+    else {
+      resp.status should (equal(400) or equal(500))
+      print(resp.body)
+    }
   }
+
+  def invalidPayload(orgFileName: String, checkSum: String, resultCSV: String, ackXml: String, resultXml: String): Unit = {
+    val payload =
+      s"""
+         |{
+         |    "serviceReferenceNumber": "123456789012",
+         |    "download": {
+         |        "url": "${testConfig.url}/download/$orgFileName",
+         |        "checksum": "$checkSum",
+         |        "filename": "$orgFileName",
+         |        "filetype": "xml"
+         |    },
+         |    "upload": {
+         |        "url": "${testConfig.url}/upload-multi-part/$resultCSV",
+         |        "filename": "$resultCSV"
+         |    },
+         |    "ack": {
+         |       "url": "${testConfig.url}/upload-multi-part/$ackXml",
+         |       "filename": "$ackXml"
+         |    },
+         |    "result":{
+         |      "url": "${testConfig.url}/upload-multi-part/$resultXml",
+         |      "filename": "$resultXml"
+         |    }
+         |}
+         |""".stripMargin
+
+    val resp: WSResponse = POST("notifySourceReady", Json.parse(payload))
+    resp.status should (equal (400))
+    print(resp.body)
+  }
+
 
   def downloadFile(path: String): Unit = {
     val response = GET(path)
     response.status should (equal(200) or equal(204))
-    response
   }
-
-}*/
+}
