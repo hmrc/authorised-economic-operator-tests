@@ -22,9 +22,9 @@ trait EndToEndTestConfig extends Assertions {
         url = "http://localhost:9939")
     case "development" =>
       TestConfig(
-        requiresPort = false,
-        apiProxyUrl = "https://authorised-economic-operator-data-converter.protected.mdtp",
-        url = "https://authorised-economic-operator-stubs.protected.mdtp")
+        requiresPort = true,
+        apiProxyUrl = "http://localhost:9937",
+        url = "http://localhost:9939")
     case "qa" =>
       TestConfig(
         requiresPort = false,
