@@ -61,5 +61,25 @@ class converterTest extends AcceptanceTestSpec {
       DataConverterApi.downloadFile(s"${testConfig.url}/download/ack.xml")
 
     }
+
+    scenario("Sequence Number verification during Transformation") {
+      Given("Transformation microservice triggered")
+
+      DataConverterApi.aeoMraDataConverter(
+        "EU-messageid00.zip",
+        "8d9a1e41048030dadddb447067b5ca40",
+        "output.csv",
+        "ack.xml",
+        "result.xml",
+        "original.xml")
+      When("CSV file is generated when file transformation is a success")
+      DataConverterApi.downloadFile(s"${testConfig.url}/download/output.csv")
+      Then("user can see the results and ack files")
+      DataConverterApi.downloadFile(s"${testConfig.url}/download/ack.xml")
+      DataConverterApi.downloadFile(s"${testConfig.url}/download/result.xml")
+      And("Sequence Number and MessageID Stroed in Mongo")
+      DataConverterApi.sequence_messageId_persisted()
+    }
+
   }
 }
