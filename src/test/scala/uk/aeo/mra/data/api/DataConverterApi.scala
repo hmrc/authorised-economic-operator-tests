@@ -1,7 +1,11 @@
 package uk.aeo.mra.data.api
 
+import com.mongodb.{BasicDBObject, DBCollection, DBCursor, DBObject}
+import com.mongodb.casbah.{MongoClient, MongoClientURI, MongoDB}
+import com.mongodb.util.JSON
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
+import java.util
 
 object DataConverterApi extends Api {
 
@@ -84,5 +88,35 @@ object DataConverterApi extends Api {
   def downloadFile(path: String): Unit = {
     val response = GET(path)
     response.status should (equal(200) or equal(204))
+  }
+
+  def connectAEOMongoDB(): DBCollection={
+    val aeodb : String = "authorised-economic-operator-data-converter"
+    val aeocollection : String = "aeo_mra_message"
+    val mongo_url = MongoClientURI(testConfig.mongoUrl)
+    val mongoClient: MongoClient = MongoClient(mongo_url)
+    val db = mongoClient(aeodb)
+    db.getCollection(aeocollection)
+  }
+
+  def retriveDetailsFromMongoDB():  Int ={
+    val query : BasicDBObject = new BasicDBObject()
+    val obj  = new util.ArrayList[BasicDBObject]
+    obj.add(new BasicDBObject("messageId", "00000000-0000-0000-0000-000000000000"))
+    obj.add(new BasicDBObject("sequenceNumber", 0))
+    obj.add(new BasicDBObject("source", "EU"))
+    query.put("$and", obj)
+    connectAEOMongoDB().find(query).count()
+  }
+
+  def verify_sequence_messageId_persisted(): Unit={
+    if(retriveDetailsFromMongoDB().equals(1)){
+      println("Sequence Number and Message IDs are Stored in MongoDB!!!")
+    }
+    else{
+      println("Sequence Number and Message IDs are NOT Stored in MongoDB !!!")
+    }
+
+
   }
 }
