@@ -7,6 +7,26 @@ class converterTest extends AcceptanceTestSpec {
 
   feature("transformation from zip to csv file") {
 
+    scenario("Sequence Number  Message ID verification during Transformation") {
+      Given("Transformation microservice triggered")
+
+      DataConverterApi.aeoMraDataConverter(
+        "EU-messageid00.zip",
+        "8d9a1e41048030dadddb447067b5ca40",
+        "output.csv",
+        "ack.xml",
+        "result.xml",
+        "original.xml")
+      When("CSV file is generated when file transformation is a success")
+      DataConverterApi.downloadFile(s"${testConfig.url}/download/output.csv")
+      Then("user can see the results and ack files")
+      DataConverterApi.downloadFile(s"${testConfig.url}/download/ack.xml")
+      DataConverterApi.downloadFile(s"${testConfig.url}/download/result.xml")
+      And("Sequence Number and MessageID Stroed in Mongo")
+      DataConverterApi.verify_sequence_messageId_persisted()
+    }
+
+
     scenario("Happy path file transformation from zip to csv") {
       Given("Transformation microservice triggered")
       DataConverterApi.aeoMraDataConverter("AEO_MRA_EU_UK_2020-11-10T14.36.75Z.zip", "27e41209098b9b6c11b997f0fd84586c", "AEO_MRA_EU_UK_2020-11-10T14.36.75Z.csv", "ack.xml", "result.xml", "AEO_MRA_EU_UK_2020-11-10T14.36.75Z.zip_2611.xml")
@@ -60,25 +80,6 @@ class converterTest extends AcceptanceTestSpec {
       DataConverterApi.invalidPayload("AEO_MRA_EU_UK_2020-11-10T14.36.75Z.zip", "27e41209098b9b6c11b997f0fd84586c", "AEO_MRA_EU_UK_2020-11-10T14.36.75Z.csv", "ack.xml", "result.xml")
       DataConverterApi.downloadFile(s"${testConfig.url}/download/ack.xml")
 
-    }
-
-    scenario("Sequence Number verification during Transformation") {
-      Given("Transformation microservice triggered")
-
-      DataConverterApi.aeoMraDataConverter(
-        "EU-messageid00.zip",
-        "8d9a1e41048030dadddb447067b5ca40",
-        "output.csv",
-        "ack.xml",
-        "result.xml",
-        "original.xml")
-      When("CSV file is generated when file transformation is a success")
-      DataConverterApi.downloadFile(s"${testConfig.url}/download/output.csv")
-      Then("user can see the results and ack files")
-      DataConverterApi.downloadFile(s"${testConfig.url}/download/ack.xml")
-      DataConverterApi.downloadFile(s"${testConfig.url}/download/result.xml")
-      And("Sequence Number and MessageID Stroed in Mongo")
-      DataConverterApi.sequence_messageId_persisted()
     }
 
   }
