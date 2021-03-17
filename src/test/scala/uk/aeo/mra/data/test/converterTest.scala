@@ -22,7 +22,7 @@ class converterTest extends AcceptanceTestSpec {
       Then("user can see the results and ack files")
       DataConverterApi.downloadFile(s"${testConfig.url}/download/ack.xml")
       DataConverterApi.downloadFile(s"${testConfig.url}/download/result.xml")
-      And("Sequence Number and MessageID Stroed in Mongo")
+      And("Sequence Number and MessageID Stored in MongoDB")
       DataConverterApi.verify_sequence_messageId_persisted()
     }
 
